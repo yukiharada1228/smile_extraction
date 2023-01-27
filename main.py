@@ -58,7 +58,7 @@ def execute():
                 probs_max = max(probs)
                 logger.info({"action": "execute", "probs_max": probs_max})
                 cv.imwrite("static/imgs/output.jpg", frame)
-    return render_template("index.html")
+    return render_template("index.html", probs_max=probs_max)
 
 
 @app.route("/display/<filename>")
