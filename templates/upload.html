@@ -1,6 +1,6 @@
 <!doctype html>
 <title>笑顔きりとり君</title>
-<h1>笑顔の瞬間を切り取ります</h1>
+<h1>笑顔の瞬間を切り取り</h1>
 <p>
 	{% with messages = get_flashed_messages() %}
 	{% if messages %}
@@ -19,7 +19,7 @@
 	</video>
 </div>
 {% endif %}
-<form method="post" action="/" enctype="multipart/form-data">
+<form method="post" action="/upload" enctype="multipart/form-data">
 	<dl>
 		<p>
 			<input type="file" name="file" autocomplete="off" accept="video/*">
@@ -27,5 +27,10 @@
 	</dl>
 	<p>
 		<input type="submit" value="送信">
+	</p>
+</form>
+<form method="post" action="/execute" enctype="multipart/form-data">
+	<p>
+		<input type="submit" value="実行">
 	</p>
 </form>

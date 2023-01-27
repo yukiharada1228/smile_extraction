@@ -1,0 +1,3 @@
+[submodule "models/smile_detection"]
+	path = models/smile_detection
+	url = https://github.com/yukiharada1228/smile_detection.git
