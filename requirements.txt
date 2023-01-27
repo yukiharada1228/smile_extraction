@@ -1,0 +1,3 @@
+openvino==2021.4.2
+openvino-dev[pytorch]==2021.4.2
+Flask==2.2.2
