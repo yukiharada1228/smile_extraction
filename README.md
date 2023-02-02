@@ -10,9 +10,8 @@
 
 # Usage
 ```bash
-git clone https://github.com/yukiharada1228/smile_extraction.git
+git clone --recursive https://github.com/yukiharada1228/smile_extraction.git
 cd smile_extraction
-git submodule update --init --recursive
 pip install -r requirements.txt
 python3 main.py
 ```
