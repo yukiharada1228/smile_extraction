@@ -10,12 +10,13 @@ from app import app
 
 logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 logger = logging.getLogger(__name__)
-import models.smile_detection.face_detection.face_detection.config as face_detection
-import models.smile_detection.smile_detection.config as smile_detection
+from models.smile_detection.face_detection.face_detection import \
+    config as face_config
+from models.smile_detection.smile_detection import config as smile_config
 
 filename = ""
-face_detect = face_detection.face_detect
-smile_recognition = smile_detection.smile_recognition
+face_detect = face_config.face_detect
+smile_recognition = smile_config.smile_recognition
 
 
 @app.route("/")
