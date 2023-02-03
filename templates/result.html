@@ -6,10 +6,10 @@
   </head>
   <body>
     <h1>最高の笑顔</h1>
-    {% if probs_max %}
+    {% if smile_score %}
       <div>
-        <img src="/static/imgs/output.jpg" style="width: 400px;">
-        <p>笑顔スコア：{{ probs_max }}</p>
+        <img src="/static/imgs/{{ id }}.jpg" style="width: 400px;">
+        <p>笑顔スコア：{{ smile_score }}</p>
       </div>
     {% endif %}
   </body>
