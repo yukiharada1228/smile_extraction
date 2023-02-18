@@ -1,4 +1,5 @@
 import logging
+import threading
 from pathlib import Path
 
 import cv2 as cv
@@ -20,6 +21,7 @@ smile_recognition = config.smile_recognition
 UPLOADS_FOLDER = config.UPLOADS_FOLDER
 
 count = 0
+LOCK = threading.Lock()
 
 
 @app.route("/", methods=["GET"])
@@ -27,9 +29,10 @@ def index():
     global count
     if "id" not in session:
         session.permanent = True
-        user = count
-        session["id"] = user
-        count += 1
+        with LOCK:
+            user = count
+            session["id"] = user
+            count += 1
     if "filename" in session:
         filename = session["filename"]
         return render_template("index.html", title=title, filename=filename)
@@ -73,9 +76,7 @@ def execute():
                 cv.imwrite(f"static/outputs/{id}.jpg", frame)
     (Path("static") / "uploads" / filename).unlink()
     del session["filename"]
-    return render_template(
-        "result.html", title=title, id=id, smile_score=smile_score
-    )
+    return render_template("result.html", title=title, id=id, smile_score=smile_score)
 
 
 if __name__ == "__main__":
