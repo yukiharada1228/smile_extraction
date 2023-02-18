@@ -54,6 +54,7 @@ def display_video(filename):
 
 @app.route("/execute", methods=["POST"])
 def execute():
+    id = session["id"]
     filename = session["filename"]
     video_frame_count = 0
     capture = cv.VideoCapture("static/uploads/" + filename)
@@ -69,7 +70,7 @@ def execute():
             if max(probs) > smile_score:
                 smile_score = max(probs)
                 logger.info({"action": "execute", "smile_score": smile_score})
-                cv.imwrite(f"static/outputs/{filename}.jpg", frame)
+                cv.imwrite(f"static/outputs/{id}.jpg", frame)
     (Path("static") / "uploads" / filename).unlink()
     del session["filename"]
     return render_template(
