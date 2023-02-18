@@ -4,7 +4,7 @@
 <h1>{{title}}</h1>
 <body>
     {% if filename %}
-    <h2>{{filename}}がアップロードされました。</h2>
+    <h2>動画ファイルがアップロードされました。</h2>
     <div style="margin: 10px auto;">
         <video autoplay="autoplay" controls="controls" preload="preload" width="400px">
             <source src="{{ url_for('display_video', filename=filename) }}" type="video/mp4" />
