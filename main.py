@@ -74,7 +74,7 @@ def execute():
     (Path("static") / "uploads" / filename).unlink()
     del session["filename"]
     return render_template(
-        "result.html", title=title, filename=filename, smile_score=smile_score
+        "result.html", title=title, id=id, smile_score=smile_score
     )
 
 
