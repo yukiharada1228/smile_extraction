@@ -87,7 +87,7 @@ def execute():
                 cv.imwrite(f"static/imgs/{session['id']}.jpg", frame)
     (Path("static") / "uploads" / session["filename"]).unlink()
     del session["filename"]
-    return render_template("result.html", id=session['id'], smile_score=smile_score)
+    return render_template("result.html", id=session["id"], smile_score=smile_score)
 
 
 @app.route("/display/<filename>")
@@ -96,4 +96,4 @@ def display_video(filename):
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)

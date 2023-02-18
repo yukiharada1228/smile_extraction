@@ -1,16 +1,11 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <title>笑顔きりとり君</title>
-  </head>
-  <body>
-    <h1>最高の笑顔</h1>
-    {% if smile_score %}
-      <div>
-        <img src="/static/imgs/{{ id }}.jpg" style="width: 400px;">
-        <p>笑顔スコア：{{ smile_score }}</p>
-      </div>
-    {% endif %}
-  </body>
-</html>
+{% extends "base.html" %}
+{% block title %}{{title}}{% endblock %}
+{% block content %}
+<h1>最高の笑顔</h1>
+<body>
+  <div>
+    <img src="/static/outputs/{{ filename }}.jpg" style="width: 400px;">
+    <p>笑顔スコア：{{ smile_score }}</p>
+  </div>
+</body>
+{% endblock %}
