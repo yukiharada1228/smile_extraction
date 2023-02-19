@@ -1,9 +1,14 @@
+import datetime
+import json
 import logging
 import threading
+import time
 from pathlib import Path
+from queue import Queue
 
 import cv2 as cv
-from flask import redirect, render_template, request, session, url_for
+from flask import (Response, jsonify, redirect, render_template, request,
+                   session, url_for)
 from werkzeug.utils import secure_filename
 
 import config
@@ -22,22 +27,72 @@ UPLOADS_FOLDER = config.UPLOADS_FOLDER
 
 count = 0
 LOCK = threading.Lock()
+queue_dict = dict()
 
 
 @app.route("/", methods=["GET"])
 def index():
-    global count
+    global count, queue_dict
     if "id" not in session:
         session.permanent = True
         with LOCK:
-            user = count
+            user = str(count)
             session["id"] = user
+            queue_dict[str(session["id"])] = Queue()
             count += 1
     if "filename" in session:
         filename = session["filename"]
         return render_template("index.html", title=title, filename=filename)
     else:
         return render_template("index.html", title=title)
+
+
+@app.route("/stream")
+def stream():
+    global queue_dict
+    queue = queue_dict[str(session["id"])]
+    return Response(event_stream(queue), mimetype="text/event-stream")
+
+
+def event_stream(queue):
+    while True:
+        persent = queue.get(True)
+        print("progress:{}%".format(persent))
+        sse_event = "progress-item"
+        if persent == 100:
+            sse_event = "last-item"
+        yield "event:{event}\ndata:{data}\n\n".format(event=sse_event, data=persent)
+
+
+@app.route("/ajax", methods=["POST"])
+def ajax():
+    global queue_dict
+    queue = queue_dict[str(session["id"])]
+    if request.method == "POST":
+        start = str(datetime.datetime.now())
+        id = session["id"]
+        filename = session["filename"]
+        video_frame_count = 0
+        capture = cv.VideoCapture("static/uploads/" + filename)
+        totalframecount = int(capture.get(cv.CAP_PROP_FRAME_COUNT))
+        smile_score = 0.0
+        while capture.isOpened():
+            ret, frame = capture.read()
+            if not ret:
+                break
+            video_frame_count += 1
+            faces = face_detect.detect(frame)
+            probs = smile_recognition.recognize(frame, faces)
+            if len(probs):
+                if max(probs) > smile_score:
+                    smile_score = max(probs)
+                    logger.info({"action": "execute", "smile_score": smile_score})
+                    cv.imwrite(f"static/outputs/{id}.jpg", frame)
+            queue.put(100 * video_frame_count // totalframecount)
+        (Path("static") / "uploads" / filename).unlink()
+        end = str(datetime.datetime.now())
+        result = {"id": id, "smileScore": str(smile_score)}
+        return jsonify(json.dumps(result))
 
 
 @app.route("/upload", methods=["POST"])
@@ -53,29 +108,6 @@ def upload_video():
 @app.route("/display/<filename>")
 def display_video(filename):
     return redirect(url_for("static", filename="uploads/" + filename), code=301)
-
-
-@app.route("/execute", methods=["POST"])
-def execute():
-    id = session["id"]
-    filename = session["filename"]
-    video_frame_count = 0
-    capture = cv.VideoCapture("static/uploads/" + filename)
-    smile_score = 0.0
-    while capture.isOpened():
-        ret, frame = capture.read()
-        if not ret:
-            break
-        video_frame_count += 1
-        faces = face_detect.detect(frame)
-        probs = smile_recognition.recognize(frame, faces)
-        if len(probs):
-            if max(probs) > smile_score:
-                smile_score = max(probs)
-                logger.info({"action": "execute", "smile_score": smile_score})
-                cv.imwrite(f"static/outputs/{id}.jpg", frame)
-    (Path("static") / "uploads" / filename).unlink()
-    return render_template("result.html", title=title, id=id, smile_score=smile_score)
 
 
 @app.route("/reset", methods=["GET"])
