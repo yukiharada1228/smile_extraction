@@ -2,13 +2,12 @@ import datetime
 import json
 import logging
 import threading
-import time
 from pathlib import Path
 from queue import Queue
 
 import cv2 as cv
 from flask import (Response, jsonify, redirect, render_template, request,
-                   session, url_for)
+                   send_file, session, url_for)
 from werkzeug.utils import secure_filename
 
 import config
@@ -103,6 +102,19 @@ def upload_video():
     video.save(str(UPLOADS_FOLDER / filename))
     session["filename"] = filename
     return redirect(url_for("index"))
+
+
+@app.route("/download", methods=["POST"])
+def download():
+    id = session["id"]
+    downloadFileName = "smile.jpg"
+    downloadFile = "static/outputs/" + id + ".jpg"
+    return send_file(
+        downloadFile,
+        as_attachment=True,
+        download_name=downloadFileName,
+        mimetype="image/jpeg",
+    )
 
 
 @app.route("/display/<filename>")

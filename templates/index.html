@@ -25,6 +25,9 @@
 <input type="button" id="ajax" class="btn btn-primary d-block mx-auto" value="処理開始">
 <div id="result_img" class="container mt-5"></div>
 <p id="result_smile_score" class="container"></p>
+<form action="/download" method="post">
+    <div id="download_container" class="container mb-4"></div>
+</form>
 
 {% else %}
 <h2>動画ファイルをアップロードしてください。</h2>
