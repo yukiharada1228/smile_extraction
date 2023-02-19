@@ -79,5 +79,14 @@ def execute():
     return render_template("result.html", title=title, id=id, smile_score=smile_score)
 
 
+@app.route("/reset", methods=["GET"])
+def reset():
+    try:
+        del session["filename"]
+    except KeyError as ex:
+        logger.warning({"action": "reset", "ex": ex})
+    return redirect(url_for("index"))
+
+
 if __name__ == "__main__":
     app.run(host=host, port=port, debug=debug)

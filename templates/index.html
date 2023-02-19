@@ -1,28 +1,25 @@
 {% extends "base.html" %}
 {% block title %}{{title}}{% endblock %}
+{% block nav %}{{title}}{% endblock %}
 {% block content %}
-<h1>{{title}}</h1>
-<body>
-    {% if filename %}
-    <h2>動画ファイルがアップロードされました。</h2>
-    <div style="margin: 10px auto;">
-        <video autoplay="autoplay" controls="controls" preload="preload" width="400px">
-            <source src="{{ url_for('display_video', filename=filename) }}" type="video/mp4" />
-        </video>
-    </div>
-    <form action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="video_file" autocomplete="off" accept="video/*">
-        <input type="submit" value="アップロード">
-    </form>
-    <form method="post" action="/execute" enctype="multipart/form-data">
-            <input type="submit" value="実行">
-    </form>
-    {% else %}
-    <h2>動画ファイルをアップロードしてください。</h2>
-    <form action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="video_file" autocomplete="off" accept="video/*">
-        <input type="submit" value="アップロード">
-    </form>
-    {% endif %}
-</body>
+
+{% if filename %}
+<h2>動画ファイルがアップロードされました。</h2>
+<video id="video" autoplay="autoplay" controls="controls" preload="preload">
+    <source src="{{ url_for('display_video', filename=filename) }}" type="video/mp4" />
+</video>
+<form action="/upload" method="post" enctype="multipart/form-data">
+    <input type="file" name="video_file" autocomplete="off" accept="video/*">
+    <input type="submit" value="アップロード">
+</form>
+<form method="post" action="/execute" enctype="multipart/form-data">
+    <input type="submit" value="実行">
+</form>
+{% else %}
+<h2>動画ファイルをアップロードしてください。</h2>
+<form action="/upload" method="post" enctype="multipart/form-data">
+    <input type="file" name="video_file" autocomplete="off" accept="video/*">
+    <input type="submit" value="アップロード">
+</form>
+{% endif %}
 {% endblock %}

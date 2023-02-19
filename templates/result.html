@@ -1,11 +1,10 @@
 {% extends "base.html" %}
 {% block title %}{{title}}{% endblock %}
+{% block nav %}{{title}}{% endblock %}
+
 {% block content %}
-<h1>最高の笑顔</h1>
-<body>
-  <div>
-    <img src="/static/outputs/{{ id }}.jpg" style="width: 400px;">
-    <p>笑顔スコア：{{ smile_score }}</p>
-  </div>
-</body>
+<div class="container-fluid">
+  <img id="img" src="/static/outputs/{{ id }}.jpg">
+  <p>笑顔スコア：{{ smile_score }}</p>
+</div>
 {% endblock %}
