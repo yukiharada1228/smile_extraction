@@ -5,21 +5,29 @@
 
 {% if filename %}
 <h2>動画ファイルがアップロードされました。</h2>
-<video id="video" autoplay="autoplay" controls="controls" preload="preload">
+<video id="video" controls="controls" preload="preload">
     <source src="{{ url_for('display_video', filename=filename) }}" type="video/mp4" />
 </video>
-<form action="/upload" method="post" enctype="multipart/form-data">
-    <input type="file" name="video_file" autocomplete="off" accept="video/*">
-    <input type="submit" value="アップロード">
+<form class="row mb-3" action="/upload" method="post" enctype="multipart/form-data">
+    <div class="col-7">
+        <input class="form-control" type="file" name="video_file" autocomplete="off" accept="video/*">
+    </div>
+    <div class="col-5">
+        <button type="submit" class="btn btn-primary">アップロード</button>
+    </div>
 </form>
 <form method="post" action="/execute" enctype="multipart/form-data">
-    <input type="submit" value="実行">
+    <button type="submit" class="btn btn-primary">実行</button>
 </form>
 {% else %}
 <h2>動画ファイルをアップロードしてください。</h2>
-<form action="/upload" method="post" enctype="multipart/form-data">
-    <input type="file" name="video_file" autocomplete="off" accept="video/*">
-    <input type="submit" value="アップロード">
+<form class="row mb-3" action="/upload" method="post" enctype="multipart/form-data">
+    <div class="col-7">
+        <input class="form-control" type="file" name="video_file" autocomplete="off" accept="video/*">
+    </div>
+    <div class="col-5">
+        <button type="submit" class="btn btn-primary">アップロード</button>
+    </div>
 </form>
 {% endif %}
 {% endblock %}

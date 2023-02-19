@@ -75,7 +75,6 @@ def execute():
                 logger.info({"action": "execute", "smile_score": smile_score})
                 cv.imwrite(f"static/outputs/{id}.jpg", frame)
     (Path("static") / "uploads" / filename).unlink()
-    del session["filename"]
     return render_template("result.html", title=title, id=id, smile_score=smile_score)
 
 
