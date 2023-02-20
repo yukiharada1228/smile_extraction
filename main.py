@@ -1,4 +1,4 @@
-import datetime
+import hashlib
 import json
 import logging
 import threading
@@ -17,6 +17,7 @@ logger = logging.getLogger(__name__)
 
 title = config.title
 app = config.app
+key = app.secret_key
 host = config.host
 port = config.port
 debug = config.debug
@@ -36,7 +37,7 @@ def index():
         session.permanent = True
         with LOCK:
             user = str(count)
-            session["id"] = user
+            session["id"] = hashlib.sha256((key + user).encode('utf-8')).hexdigest()
             queue_dict[str(session["id"])] = Queue()
             count += 1
     if "filename" in session:
@@ -68,7 +69,6 @@ def ajax():
     global queue_dict
     queue = queue_dict[str(session["id"])]
     if request.method == "POST":
-        start = str(datetime.datetime.now())
         id = session["id"]
         filename = session["filename"]
         video_frame_count = 0
@@ -88,8 +88,6 @@ def ajax():
                     logger.info({"action": "execute", "smile_score": smile_score})
                     cv.imwrite(f"static/outputs/{id}.jpg", frame)
             queue.put(100 * video_frame_count // totalframecount)
-        (Path("static") / "uploads" / filename).unlink()
-        end = str(datetime.datetime.now())
         result = {"id": id, "smileScore": str(smile_score)}
         return jsonify(json.dumps(result))
 
