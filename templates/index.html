@@ -8,7 +8,7 @@
 <video id="video" controls="controls" preload="preload">
     <source src="{{ url_for('display_video', filename=filename) }}" type="video/mp4" />
 </video>
-<form class="row mb-3" action="/upload" method="post" enctype="multipart/form-data">
+<form class="row mb-4" action="/upload" method="post" enctype="multipart/form-data">
     <div class="col-7">
         <input class="form-control" type="file" name="video_file" autocomplete="off" accept="video/*">
     </div>
@@ -16,14 +16,14 @@
         <button type="submit" class="btn btn-primary">アップロード</button>
     </div>
 </form>
-<div class="progress_wrap bg-dark m-5">
+<input type="button" id="ajax" class="btn btn-primary d-block mx-auto" value="処理開始">
+<div class="progress_wrap bg-dark m-4">
     <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0"
         aria-valuemax="100" style="width: 0%">
         <span class="progress-bar-label mx-2">0%</span>
     </div>
 </div>
-<input type="button" id="ajax" class="btn btn-primary d-block mx-auto" value="処理開始">
-<div id="result_img" class="container mt-5"></div>
+<div id="result_img" class="container mt-4"></div>
 <p id="result_smile_score" class="container"></p>
 <form action="/download" method="post">
     <div id="download_container" class="container mb-4"></div>
