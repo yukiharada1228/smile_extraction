@@ -37,7 +37,7 @@ def index():
         session.permanent = True
         with LOCK:
             user = str(count)
-            session["id"] = hashlib.sha256((key + user).encode('utf-8')).hexdigest()
+            session["id"] = hashlib.sha256((key + user).encode("utf-8")).hexdigest()
             queue_dict[str(session["id"])] = Queue()
             count += 1
     if "filename" in session:
