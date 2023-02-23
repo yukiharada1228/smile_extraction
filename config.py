@@ -7,7 +7,7 @@ from pathlib import Path
 from flask import Flask
 
 title = "笑顔きりとりくん"
-debug = True
+debug = False
 host = "0.0.0.0"
 port = 5000
 if debug:
