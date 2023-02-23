@@ -57,7 +57,6 @@ def stream():
 def event_stream(queue):
     while True:
         persent = queue.get(True)
-        print("progress:{}%".format(persent))
         sse_event = "progress-item"
         if persent == 100:
             sse_event = "last-item"
