@@ -5,9 +5,6 @@
 
 {% if filename %}
 <h2>動画ファイルがアップロードされました。</h2>
-<video id="video" controls="controls" preload="preload">
-    <source src="{{ url_for('display_video', filename=filename) }}" type="video/mp4" />
-</video>
 <form class="row mb-4" action="/upload" method="post" enctype="multipart/form-data">
     <div class="col-7">
         <input class="form-control" type="file" name="video_file" autocomplete="off" accept="video/*">
@@ -16,7 +13,10 @@
         <button type="submit" class="btn btn-primary">アップロード</button>
     </div>
 </form>
-<input type="button" id="ajax" class="btn btn-primary d-block mx-auto" value="処理開始">
+<video id="video" controls="controls" preload="preload">
+    <source src="{{ url_for('display_video', filename=filename) }}" type="video/mp4" />
+</video>
+<input type="button" id="ajax" class="btn btn-primary d-block mx-auto" style="margin-top: 18px;" value="処理開始">
 <div class="progress_wrap bg-dark m-4">
     <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0"
         aria-valuemax="100" style="width: 0%">
