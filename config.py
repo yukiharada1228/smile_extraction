@@ -9,7 +9,7 @@ from flask import Flask
 title = "笑顔きりとりくん"
 debug = False
 host = "0.0.0.0"
-port = 5000
+port = 80
 if debug:
     level = logging.DEBUG
 else:
